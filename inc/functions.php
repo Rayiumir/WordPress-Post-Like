@@ -33,10 +33,12 @@ function rayium_post_like_install() {
 
 function rayium_post_like_script(){
 
+    $JS = ['jquery'];
+
     wp_enqueue_script(
         'wp_like_script',
         RAYIUM_WP_LIKES_JS . 'likes.js',
-        ['jquery'],
+        $JS,
         RAYIUM_LIKES_VERSION,
         true
     );
@@ -46,7 +48,7 @@ function rayium_post_like_script(){
         RAYIUM_WP_LIKES_CSS . 'likes.css',
         [],
         RAYIUM_LIKES_VERSION
-        );
+    );
 
     wp_localize_script( 'rayium_script', 'rayium', [
         'ajax_url'  => admin_url( 'admin-ajax.php' )
