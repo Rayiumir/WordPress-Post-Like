@@ -56,3 +56,17 @@ function rayium_post_like_script(){
 
 }
 add_action( 'wp_enqueue_scripts', 'rayium_post_like_script' );
+
+// Add Buuton Like in Content
+
+function rayium_button_post_like($content){
+
+    $text = __('Like', 'rayium-post-like');
+
+    $post_id = get_the_ID();
+    
+    $button = "<button type='button' class='LikePost' data-id='$post_id'> $text <span class='like-count'>20</span></button>";
+
+    return $content . $button;
+}
+add_filter( 'the_content', 'rayium_button_post_like' );
