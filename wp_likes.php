@@ -23,6 +23,12 @@
  define('RAYIUM_WP_LIKES_JS', RAYIUM_URL . 'js/');
  
  define( 'RAYIUM_WP_LIKES_VERSION', '1.0.0' );
+
+ define(
+    'RAYIUM_LIKES_VERSION',
+    defined('WP_DEBUG') &&
+    WP_DEBUG ? time() : RAYIUM_WP_LIKES_VERSION
+);
  
  // Calling Files
  
@@ -40,5 +46,5 @@
  });
  
  // Activation Install
- 
  register_activation_hook( __FILE__, 'rayium_post_like_install' );
+ 
