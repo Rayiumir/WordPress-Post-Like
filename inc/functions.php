@@ -70,3 +70,35 @@ function rayium_button_post_like($content){
     return $content . $button;
 }
 add_filter( 'the_content', 'rayium_button_post_like' );
+
+// Callback Ajax Post Like
+
+function rayium_callback_post_like() {
+
+    $result = [];
+
+    $post_id = absint( $_POST['post_id'] );
+    $like  = $_POST['like'] == 'true' ? true : false;
+
+    if( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'LikePost' . $post_id ) ){
+        wp_send_json_error( [
+            'message'   => 'Forbidden, nonce is invalid',
+            'code'      => '403',
+        ], 401 );
+    }
+
+    $liked      = rayium_post_do_like( $post_id, get_current_user_id(), $like );
+
+    if( is_wp_error( $liked ) ){
+        wp_send_json_error( [
+            'message'   => $liked->get_error_message(),
+            'code'      => $liked->get_error_code(),
+        ], 401 );
+    }else{
+        wp_send_json_success( $liked );
+    }
+
+}
+add_action( 'wp_ajax_like', 'rayium_callback_post_like' );
+
+
