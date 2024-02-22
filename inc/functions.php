@@ -36,7 +36,7 @@ function rayium_post_like_script(){
     $JS = ['jquery'];
 
     wp_enqueue_script(
-        'wp_like_script',
+        'rayium_script',
         RAYIUM_WP_LIKES_JS . 'likes.js',
         $JS,
         RAYIUM_LIKES_VERSION,
@@ -44,7 +44,7 @@ function rayium_post_like_script(){
     );
 
     wp_enqueue_style(
-        'wp_like_style',
+        'rayium_style',
         RAYIUM_WP_LIKES_CSS . 'likes.css',
         [],
         RAYIUM_LIKES_VERSION
