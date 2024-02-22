@@ -114,4 +114,82 @@ function rayium_get_post_like( $post_id ){
     return absint( $like_count );
 }
 
+// Function Like and Dislike
+
+function rayium_post_like_do_like( $post_id, $user_id, $like ){
+
+    global $wpdb;
+    
+    if( ! get_post_type( $post_id ) ){
+        return new WP_Error( 'invalid_post_id', __( 'Post is invalid', 'rayium-post-like' ) );
+    }
+
+    $exists_id     = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT ID FROM {$wpdb->dypl_post_likes} WHERE post_id = %d AND user_id = %d"
+            , $post_id
+            , get_current_user_id()
+        )
+    );
+
+    if( $exists_id && $like ){
+        //You like previously
+        return new WP_Error( 'liked_prev', __( 'You liked previously', 'rayium-post-like' ) );
+    }
+
+    if( ! $exists_id && ! $like ){
+        //You did not like this post
+        return new WP_Error( 'did_not_liked', __( 'You did not like previously', 'rayium-post-like' ) );
+    }
+
+    if( $like ){
+
+        $like_data = [
+            'post_id'       => $post_id,
+            'user_id'       => $user_id,
+            'ip'            => $_SERVER['REMOTE_ADDR'],
+            'liked'         => 1,
+            'created_at'    => current_time('mysql')
+        ];
+
+        $liked = $wpdb->insert(
+            $wpdb->dypl_post_likes,
+            $like_data,
+            ['%d', '%d', '%s', '%d', '%s']
+        );
+
+        if( $liked ){
+            return [
+                'message'   =>  __( 'Liked successfuly', 'rayium-post-like' ),
+                'liked'     => true,
+                'count'     => rayium_get_post_like( $post_id ),
+            ];
+        }else{
+            return new WP_Error( 'like_error', __( 'Error in like', 'rayium-post-like' ) );
+        }
+
+    }else{
+
+        $disliked = $wpdb->delete(
+            $wpdb->dypl_post_likes,
+            [
+                'ID'    => $exists_id
+            ]
+        );
+
+        if( $disliked ){
+            return [
+                'message'   =>  __( 'Disliked successfuly', 'rayium-post-like' ),
+                'liked'     => false,
+                'count'     => rayium_get_post_like( $post_id ),
+            ];
+        }else{
+            return new WP_Error( 'dislike_error', __( 'Error in dislike', 'rayium-post-like' ) );
+        }
+
+    }
+
+}
+
+
 
