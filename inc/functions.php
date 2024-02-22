@@ -101,4 +101,17 @@ function rayium_callback_post_like() {
 }
 add_action( 'wp_ajax_like', 'rayium_callback_post_like' );
 
+// Function Get Data Like Conut 
+
+function rayium_get_post_like( $post_id ){
+    global $wpdb;
+    $like_count = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->likes} WHERE post_id = %d"
+            , $post_id
+        )
+    ); 
+    return absint( $like_count );
+}
+
 
