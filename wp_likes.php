@@ -37,7 +37,7 @@
  // Database Post Likes
  
  global $wpdb;
- $wpdb->likes = $wpdb->prefix  . 'likes';
+ $wpdb->wp_likes = $wpdb->prefix  . 'likes';
  
  // Languages
  

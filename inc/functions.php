@@ -62,10 +62,17 @@ add_action( 'wp_enqueue_scripts', 'rayium_post_like_script' );
 function rayium_button_post_like($content){
 
     $text = __('Like', 'rayium-post-like');
-
     $post_id = get_the_ID();
+
+    $like_count     = rayium_get_post_like( $post_id );
+    $liked_class    = rayium_is_like_post( $post_id, get_current_user_id() ) ? 'post-liked' : '';
+    $nonce = wp_create_nonce( 'post-like' . $post_id );
     
-    $button = "<button type='button' class='LikePost' data-id='$post_id'> $text <span class='like-count'>20</span></button>";
+    $button = "<button type='button' class='post-like $liked_class' data-id='$post_id' data-nonce='$nonce'>
+        <svg width='16' height='16' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><style>.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}</style><path d='M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z' opacity='.25'/><path d='M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z' class='spinner_ajPY'/></svg> 
+     $text 
+     <span class='like-count'>$like_count</span>
+    </button>";
 
     return $content . $button;
 }
@@ -80,14 +87,14 @@ function rayium_callback_post_like() {
     $post_id = absint( $_POST['post_id'] );
     $like  = $_POST['like'] == 'true' ? true : false;
 
-    if( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'LikePost' . $post_id ) ){
+    if( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'post-like' . $post_id ) ){
         wp_send_json_error( [
             'message'   => 'Forbidden, nonce is invalid',
             'code'      => '403',
         ], 401 );
     }
 
-    $liked      = rayium_post_do_like( $post_id, get_current_user_id(), $like );
+    $liked  = rayium_do_like( $post_id, get_current_user_id(), $like );
 
     if( is_wp_error( $liked ) ){
         wp_send_json_error( [
@@ -99,7 +106,7 @@ function rayium_callback_post_like() {
     }
 
 }
-add_action( 'wp_ajax_like', 'rayium_callback_post_like' );
+add_action( 'wp_ajax_rayium_like', 'rayium_callback_post_like' );
 
 // Function Get Data Like Conut 
 
@@ -107,7 +114,7 @@ function rayium_get_post_like( $post_id ){
     global $wpdb;
     $like_count = $wpdb->get_var(
         $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->likes} WHERE post_id = %d"
+            "SELECT COUNT(*) FROM {$wpdb->wp_likes} WHERE post_id = %d"
             , $post_id
         )
     ); 
@@ -116,7 +123,7 @@ function rayium_get_post_like( $post_id ){
 
 // Function Like and Dislike
 
-function rayium_post_like_do_like( $post_id, $user_id, $like ){
+function rayium_do_like( $post_id, $user_id, $like ){
 
     global $wpdb;
     
@@ -126,7 +133,7 @@ function rayium_post_like_do_like( $post_id, $user_id, $like ){
 
     $exists_id     = $wpdb->get_var(
         $wpdb->prepare(
-            "SELECT ID FROM {$wpdb->dypl_post_likes} WHERE post_id = %d AND user_id = %d"
+            "SELECT ID FROM {$wpdb->wp_likes} WHERE post_id = %d AND user_id = %d"
             , $post_id
             , get_current_user_id()
         )
@@ -153,7 +160,7 @@ function rayium_post_like_do_like( $post_id, $user_id, $like ){
         ];
 
         $liked = $wpdb->insert(
-            $wpdb->dypl_post_likes,
+            $wpdb->wp_likes,
             $like_data,
             ['%d', '%d', '%s', '%d', '%s']
         );
@@ -171,7 +178,7 @@ function rayium_post_like_do_like( $post_id, $user_id, $like ){
     }else{
 
         $disliked = $wpdb->delete(
-            $wpdb->dypl_post_likes,
+            $wpdb->wp_likes,
             [
                 'ID'    => $exists_id
             ]
@@ -205,7 +212,7 @@ function rayium_is_like_post( $post_id, $user_id ){
 
     $liked = $wpdb->get_var(
         $wpdb->prepare(
-            "SELECT COUNT(*) FROM {$wpdb->likes} WHERE post_id = %d $where"
+            "SELECT COUNT(*) FROM {$wpdb->wp_likes} WHERE post_id = %d $where"
             , $post_id
         )
     );

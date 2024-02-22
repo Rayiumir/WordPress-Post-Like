@@ -1,12 +1,12 @@
 jQuery(document).ready(function($){
 
-    $('.LikePost').click(function(){
+    $('.post-like').click(function(){
 
         if( $(this).hasClass('loading') ){
             return;
         }
 
-        let count   = $(this).find('.LikePost');
+        let count   = $(this).find('.post-like');
         let btn      = $(this);
         let msg     = $(this).next();
 
@@ -17,7 +17,8 @@ jQuery(document).ready(function($){
             data : {
                 action : 'rayium_like',
                 post_id : $(this).data('id'),
-                like : ! $(this).hasClass('LikePosted')
+                like : ! $(this).hasClass('post-liked'),
+                _wpnonce : $(this).data('nonce')
             },
 
             beforeSend: function(){
@@ -30,9 +31,9 @@ jQuery(document).ready(function($){
             success: function( result ){
                 if( result.success ){
                     if( result.data.liked ){
-                        $(btn).addClass('LikePost');
+                        $(btn).addClass('post-liked');
                     }else{
-                        $(btn).removeClass('LikePosted');
+                        $(btn).removeClass('post-liked');
                     }
                     $(count).text( `(${result.data.count})` );
                 }else{

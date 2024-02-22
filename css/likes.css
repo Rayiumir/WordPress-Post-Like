@@ -1,4 +1,4 @@
-.LikePost {
+.post-like {
   background-color: #fff;
   border: 1px solid #d5d9d9;
   border-radius: 8px;
@@ -21,19 +21,17 @@
   width: 100px;
 }
 
-.LikePost:hover {
+.post-like:hover {
   background-color: #f7fafa;
 }
 
-.LikePost:focus {
+.post-like:focus {
   border-color: #008296;
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
   outline: 0;
 }
 
-// 
-
-.LikePosted {
+.post-liked {
   background-color: green;
   border: 1px solid #d5d9d9;
   border-radius: 8px;
@@ -56,12 +54,42 @@
   width: 100px;
 }
 
-.LikePosted:hover {
+.post-liked:hover {
   background-color: green;
 }
 
-.LikePosted:focus {
+.post-liked:focus {
   border-color: #008296;
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
   outline: 0;
+}
+
+button.post-like svg{
+  display: none;
+}
+
+button.post-like.loading svg{
+  display: inline;
+}
+
+button.post-like.post-liked {
+  background: #4CAF50;
+  color: #FFF;
+}
+
+span.like-message {
+  color: green;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s ease-in;
+  display: inline;
+}
+
+span.like-message.error {
+  color: red;
+}
+
+.like-message.show{
+  visibility: visible;
+  opacity: 1;
 }
