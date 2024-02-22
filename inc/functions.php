@@ -191,5 +191,24 @@ function rayium_post_like_do_like( $post_id, $user_id, $like ){
 
 }
 
+// Function Registration User ID and IP in  Likes Table
 
+function rayium_is_like_post( $post_id, $user_id ){
+
+    global $wpdb;
+
+    if( $user_id ){
+        $where = $wpdb->prepare( " AND user_id = %d ", $user_id );
+    }else{
+        $where = $wpdb->prepare( " AND ip = %s ", $_SERVER['REMOTE_ADDR'] );
+    }
+
+    $liked = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->likes} WHERE post_id = %d $where"
+            , $post_id
+        )
+    );
+    return $liked;
+}
 
