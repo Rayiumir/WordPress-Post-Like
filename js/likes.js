@@ -6,7 +6,7 @@ jQuery(document).ready(function($){
             return;
         }
 
-        let count   = $(this).find('.post-like');
+        let count   = $(this).find('.like-count');
         let btn      = $(this);
         let msg     = $(this).next();
 
@@ -35,7 +35,7 @@ jQuery(document).ready(function($){
                     }else{
                         $(btn).removeClass('post-liked');
                     }
-                    $(count).text( `(${result.data.count})` );
+                    $(count).text( `${result.data.count}` );
                 }else{
                     
                 }
