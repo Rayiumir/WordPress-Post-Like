@@ -1,7 +1,7 @@
 <?php 
 
 /*
- * Plugin Name:       Rayium Wordpress Post Like 
+ * Plugin Name:       Wordpress Post Like 
  * Plugin URI:        https://github.com/Rayiumir/WordPress-Post-Like
  * Description:       A Plugin Post Like for Wordpress
  * Version:           1.0.0

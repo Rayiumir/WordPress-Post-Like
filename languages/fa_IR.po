@@ -1,0 +1,65 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Rayium Wordpress Post Like\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-23 12:52+0000\n"
+"PO-Revision-Date: 2024-02-23 13:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: فارسی\n"
+"Language: fa_IR\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.6; wp-6.4.3\n"
+"X-Domain: rayium-post-like"
+
+#. Description of the plugin
+msgid "A Plugin Post Like for Wordpress"
+msgstr "یک افزونه لایک پست برای وردپرس"
+
+#: inc/functions.php:191
+msgid "Disliked successfuly"
+msgstr "با موفقیت دیسلایک شد"
+
+#: inc/functions.php:196
+msgid "Error in dislike"
+msgstr "خطا در دیسلایک"
+
+#: inc/functions.php:177
+msgid "Error in like"
+msgstr "خطا در لایک"
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "https://github.com/Rayiumir/WordPress-Post-Like"
+msgstr ""
+
+#: inc/functions.php:64
+msgid "Like"
+msgstr "لایک"
+
+#: inc/functions.php:172
+msgid "Liked successfuly"
+msgstr "با موفقیت لایک شد"
+
+#: inc/functions.php:133
+msgid "Post is invalid"
+msgstr "پست نامعتبر است"
+
+#. Name of the plugin
+msgid "Rayium Wordpress Post Like"
+msgstr "لایک پست وردپرس"
+
+#. Author of the plugin
+msgid "Raymond Baghumian"
+msgstr "رایموند باغومیان"
+
+#: inc/functions.php:151
+msgid "You did not like previously"
+msgstr "شما قبلا لایک نکردید"
+
+#: inc/functions.php:146
+msgid "You liked previously"
+msgstr "شما قبلا لایک کردید"
